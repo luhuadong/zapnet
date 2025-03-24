@@ -1,4 +1,5 @@
 import socket
+import click
 from .utils.logger import DataLogger
 from .utils.network import parse_address
 
@@ -15,6 +16,25 @@ class UDPServer:
         if self.broadcast:
             sock.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
         sock.bind(('', self.port))
+
+        bound_ip, bound_port = sock.getsockname()
+        broadcast_status = "Enabled" if self.broadcast else "Disabled"
+        status_color = "yellow" if self.broadcast else "blue"
+
+        click.echo(click.style(
+            f"⚡ UDP Server listening on {bound_ip}:{bound_port}",
+            fg="green",
+            bold=True
+        ))
+        click.echo(click.style(
+            f"📡 Broadcast: {broadcast_status} | "
+            f"Buffer size: 4096 bytes",
+            fg=status_color
+        ))
+        click.echo(click.style(
+            "🔍 Ready to receive datagrams...",
+            fg="blue"
+        ))
         
         while True:
             data, addr = sock.recvfrom(4096)

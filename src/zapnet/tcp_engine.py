@@ -1,4 +1,5 @@
 import socket
+import click
 import threading
 from .utils.logger import DataLogger
 
@@ -38,6 +39,18 @@ class TCPServer:
         sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         sock.bind(('', self.port))
         sock.listen(self.max_conn)
+
+        bound_ip, bound_port = sock.getsockname()
+        click.echo(click.style(
+            f"⚡ TCP Server running on {bound_ip}:{bound_port} "
+            f"[Max connections: {self.max_conn}]",
+            fg="green",
+            bold=True
+        ))
+        click.echo(click.style(
+            f"🔍 Listening for incoming connections...",
+            fg="blue"
+        ))
         
         while True:
             conn, addr = sock.accept()
