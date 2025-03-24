@@ -1,8 +1,6 @@
 # ZapNet ⚡
 
-[![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](
-https://www.python.org/downloads/) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](
-https://opensource.org/licenses/MIT)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT) [![Python Version](https://img.shields.io/badge/Python-3.8%2B-blue)](https://www.python.org/) [![PyPI Version](https://img.shields.io/pypi/v/zapnet.svg)](https://pypi.org/project/zapnet/)
 
 [English](README.md) | [中文](README_zh.md)
 
@@ -33,60 +31,68 @@ cd zapnet && pip install -e .[dev]
 
 ```bash
 # 启动 TCP 服务端
-zapnet tcp-server --port 5555
+zapnet tcp server --port 5555
 
 # 新终端运行 TCP 客户端测试
-zapnet tcp-client --host 127.0.0.1 --port 5555 --data "Hello, World"
+zapnet tcp client --host 127.0.0.1 --port 5555 --data "Hello, World"
+# 发送十六进制内容
+zapnet tcp client --host 127.0.0.1 --port 5555 --hex "A1B2C3D4"
+# 使用精简模式填写目标 IP 和端口
+zapnet tcp client --target 127.0.0.1:5555 --hex "A1B2C3D4"
 ```
 
 ### UDP 服务端/客户端
 
 ```bash
 # 启动 UDP 服务端
-zapnet udp-server --port 6666
+zapnet udp server --port 6666
 
 # 新终端运行 UDP 客户端测试
-zapnet udp-client --host 127.0.0.1 --port 6666 --data "Hello, World"
+zapnet udp client --host 127.0.0.1 --port 6666 --data "Hello, World"
+# 发送十六进制内容
+zapnet udp client --host 127.0.0.1 --port 6666 --hex "A1B2C3D4"
+# 使用精简模式填写目标 IP 和端口
+zapnet udp client --target 127.0.0.1:6666 --hex "A1B2C3D4"
 ```
 
 ### 设备发现（UDP广播）
 
 ```bash
 # 发送设备探测广播（全子网）
-zapnet udp-client --target 192.168.1.255:9999 --broadcast --hex "A1B2C3D4"
+zapnet udp client --target 192.168.1.255:9999 --broadcast --hex "A1B2C3D4"
 
 # 监听响应（服务端模式）
-zapnet udp-server --port 9999 --filter "hex_contains(payload, 'C3D4')" --output devices.log
+zapnet udp server --port 9999 --filter "hex_contains(payload, 'C3D4')" --output devices.log
 ```
 
 ### 网络嗅探（UDP诊断）
 
 ```bash
 # 捕获DNS请求（端口53）
-zapnet udp-server --port 53 --hex --stats 5
+zapnet udp server --port 53 --hex --stats 5
 
 # 发送自定义DNS查询
-zapnet udp-client --target 8.8.8.8:53 --hex "b362010000010000000000000377777706676f6f676c6503636f6d0000010001"
+zapnet udp client --target 8.8.8.8:53 --hex "b362010000010000000000000377777706676f6f676c6503636f6d0000010001"
 ```
 
 ### TCP压力测试
 
 ```bash
 # 启动TCP压力服务器
-zapnet tcp-server --port 9000 --max-conn 50 --timeout 300
+zapnet tcp server --port 9000 --max-conn 50 --timeout 300
 
 # 模拟高并发客户端（10线程，持续60秒）
-zapnet tcp-client --host 127.0.0.1 --port 9000 --threads 10 --duration 60 --message "LOAD_TEST"
+zapnet tcp client --host 127.0.0.1 --port 9000 --threads 10 --duration 60 --message "LOAD_TEST"
 ```
 
 ### 文件传输
 
 ```bash
 # 发送文件（TCP模式）
-zapnet tcp-client --host 192.168.1.100 --port 8888 --file data.zip
+zapnet tcp client --host 192.168.1.100 --port 8888 --file data.zip
 
 # 接收文件（自动保存）
-zapnet tcp-server --port 8888 --output received_files/
+zapnet tcp server --port 8888 --output received_files/
 ```
 
 ## 高级配置

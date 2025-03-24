@@ -1,8 +1,6 @@
 # ZapNet ⚡
 
-[![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](
-https://www.python.org/downloads/) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](
-https://opensource.org/licenses/MIT)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT) [![Python Version](https://img.shields.io/badge/Python-3.8%2B-blue)](https://www.python.org/) [![PyPI Version](https://img.shields.io/pypi/v/zapnet.svg)](https://pypi.org/project/zapnet/)
 
 [中文](README_zh.md) | [English](README.md)
 
@@ -33,60 +31,68 @@ cd zapnet && pip install -e .[dev]
 
 ```bash
 # Start TCP server
-zapnet tcp-server --port 5555
+zapnet tcp server --port 5555
 
 # Start TCP client
-zapnet tcp-client --host 127.0.0.1 --port 5555 --data "Hello, World"
+zapnet tcp client --host 127.0.0.1 --port 5555 --data "Hello, World"
+# Send hexadecimal content
+zapnet tcp client --host 127.0.0.1 --port 5555 --hex "A1B2C3D4"
+# Another form to fill in target IP and port
+zapnet tcp client --target 127.0.0.1:5555 --hex "A1B2C3D4"
 ```
 
 ### UDP Server/Client
 
 ```bash
 # Start UDP server
-zapnet udp-server --port 6666
+zapnet udp server --port 6666
 
 # Start UDP client
-zapnet udp-client --host 127.0.0.1 --port 6666 --data "Hello, World"
+zapnet udp client --host 127.0.0.1 --port 6666 --data "Hello, World"
+# Send hexadecimal content
+zapnet udp client --host 127.0.0.1 --port 6666 --hex "A1B2C3D4"
+# Another form to fill in target IP and port
+zapnet udp client --target 127.0.0.1:6666 --hex "A1B2C3D4"
 ```
 
 ### Device Discovery (UDP Broadcast)
 
 ```bash
 # Send probe broadcast
-zapnet udp-client --target 192.168.1.255:9999 --broadcast --hex "A1B2C3D4"
+zapnet udp client --target 192.168.1.255:9999 --broadcast --hex "A1B2C3D4"
 
 # Monitor responses
-zapnet udp-server --port 9999 --filter "hex_contains(payload, 'C3D4')" --output devices.log
+zapnet udp server --port 9999 --filter "hex_contains(payload, 'C3D4')" --output devices.log
 ```
 
 ### Network Sniffing (UDP)
 
 ```bash
 # Capture DNS queries
-zapnet udp-server --port 53 --hex --stats 5
+zapnet udp server --port 53 --hex --stats 5
 
 # Send custom DNS query
-zapnet udp-client --target 8.8.8.8:53 --hex "b362010000010000000000000377777706676f6f676c6503636f6d0000010001"
+zapnet udp client --target 8.8.8.8:53 --hex "b362010000010000000000000377777706676f6f676c6503636f6d0000010001"
 ```
 
 ### TCP Stress Testing
 
 ```bash
 # Start TCP server
-zapnet tcp-server --port 9000 --max-conn 50 --timeout 300
+zapnet tcp server --port 9000 --max-conn 50 --timeout 300
 
 # Simulate high concurrency
-zapnet tcp-client --host 127.0.0.1 --port 9000 --threads 10 --duration 60 --message "LOAD_TEST"
+zapnet tcp client --host 127.0.0.1 --port 9000 --threads 10 --duration 60 --message "LOAD_TEST"
 ```
 
 ### File Transfer
 
 ```bash
 # Send file (TCP)
-zapnet tcp-client --host 192.168.1.100 --port 8888 --file data.zip
+zapnet tcp client --host 192.168.1.100 --port 8888 --file data.zip
 
 # Receive files
-zapnet tcp-server --port 8888 --output received_files/
+zapnet tcp server --port 8888 --output received_files/
 ```
 
 ## Advanced Configuration
