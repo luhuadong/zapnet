@@ -1,6 +1,7 @@
 import click
 from .tcp_engine import TCPServer, TCPClient
 from .udp_engine import UDPServer, UDPClient
+from .utils.network import parse_target
 
 @click.group()
 def cli():
@@ -20,14 +21,21 @@ def server(port, max_conn, output, hex):
     TCPServer(port, max_conn, output, hex_mode=hex).run()
 
 @tcp.command()
-@click.option("--host", required=True)
-@click.option("--port", required=True, type=int)
+@click.option("--target", help="Target IP (host:port)")
+@click.option("--host", help="Target Host")
+@click.option("--port", type=int, help="Target port")
 @click.option("--data", help="Text data to send")
 @click.option("--hex", help="Hex data to send")
 @click.option("--file", type=click.Path(), help="File to send")
-def client(host, port, data, hex, file):
+def client(target, host, port, data, hex, file):
     """TCP client mode"""
-    TCPClient(host, port).send(data, hex, file)
+    if target and (host or port):
+        raise click.UsageError("Cannot use both --target and --host/--port")
+    if not target and not (host and port):
+        raise click.UsageError("Must specify either --target or both --host and --port")
+    
+    final_host, final_port = parse_target(target, host, port)
+    TCPClient(final_host, final_port).send(data, hex, file)
 
 @cli.group()
 def udp():
@@ -43,10 +51,18 @@ def server(port, output, hex, broadcast):
     UDPServer(port, output, broadcast, hex_mode=hex).run()
 
 @udp.command()
-@click.option("--target", required=True)
+@click.option("--target", help="Target IP (host:port)")
+@click.option("--host", help="Target Host")
+@click.option("--port", type=int, help="Target port")
 @click.option("--data", help="Text data to send")
 @click.option("--hex", help="Hex data to send")
 @click.option("--broadcast", is_flag=True, help="Enable broadcast")
-def client(target, data, hex, broadcast):
+def client(target, host, port, data, hex, broadcast):
     """UDP client mode"""
-    UDPClient.parse_target(target).send(data, hex, broadcast)
+    if target and (host or port):
+        raise click.UsageError("Cannot use both --target and --host/--port")
+    if not target and not (host and port):
+        raise click.UsageError("Must specify either --target or both --host and --port")
+    
+    final_host, final_port = parse_target(target, host, port)
+    UDPClient(final_host, final_port).send(data, hex, broadcast)

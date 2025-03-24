@@ -3,6 +3,14 @@ import netifaces
 import ipaddress
 from typing import Tuple
 
+def parse_target(target: str = None, host: str = None, port: int = None) -> Tuple[str, int]:
+    """统一地址解析方法"""
+    if target:
+        return parse_address(target)
+    if host and port:
+        return resolve_host(host), port
+    raise ValueError("Invalid address parameters")
+
 def parse_address(address: str) -> Tuple[str, int]:
     """解析 host:port 格式的地址字符串
     
