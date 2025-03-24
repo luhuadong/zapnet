@@ -1,4 +1,5 @@
 import socket
+import netifaces
 import ipaddress
 from typing import Tuple
 
@@ -71,6 +72,19 @@ def is_broadcast_address(ip: str) -> bool:
         )
     except ipaddress.AddressValueError:
         return False
+
+def get_protocol_family(sock):
+    family = sock.family
+    return "IPv4" if family == socket.AF_INET else "IPv6"
+
+def get_local_ips():
+    ips = []
+    for interface in netifaces.interfaces():
+        addrs = netifaces.ifaddresses(interface)
+        if netifaces.AF_INET in addrs:
+            for link in addrs[netifaces.AF_INET]:
+                ips.append(link['addr'])
+    return ips
 
 def create_socket(protocol: str) -> socket.socket:
     """创建协议对应的socket对象

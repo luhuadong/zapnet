@@ -1,7 +1,7 @@
 import socket
 import click
 from .utils.logger import DataLogger
-from .utils.network import parse_address
+from .utils.network import get_protocol_family, get_local_ips
 
 class UDPServer:
     def __init__(self, port, output, broadcast, hex_mode=False):
@@ -26,6 +26,8 @@ class UDPServer:
             fg="green",
             bold=True
         ))
+        click.echo(click.style(f"🌐 Protocol: {get_protocol_family(sock)}", fg="cyan"))
+        click.echo(click.style(f"🏠 Local IPs: {', '.join(get_local_ips())}", fg="magenta"))
         click.echo(click.style(
             f"📡 Broadcast: {broadcast_status} | "
             f"Buffer size: 4096 bytes",

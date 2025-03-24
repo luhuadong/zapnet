@@ -2,6 +2,7 @@ import socket
 import click
 import threading
 from .utils.logger import DataLogger
+from .utils.network import get_protocol_family, get_local_ips
 
 class TCPServer:
     def __init__(self, port, max_conn, output, hex_mode=False):
@@ -47,6 +48,8 @@ class TCPServer:
             fg="green",
             bold=True
         ))
+        click.echo(click.style(f"🌐 Protocol: {get_protocol_family(sock)}", fg="cyan"))
+        click.echo(click.style(f"🏠 Local IPs: {', '.join(get_local_ips())}", fg="magenta"))
         click.echo(click.style(
             f"🔍 Listening for incoming connections...",
             fg="blue"
