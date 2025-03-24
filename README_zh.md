@@ -1,6 +1,6 @@
 # ZapNet ⚡
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT) [![Python Version](https://img.shields.io/badge/Python-3.8%2B-blue)](https://www.python.org/) [![PyPI Version](https://img.shields.io/pypi/v/zapnet.svg)](https://pypi.org/project/zapnet/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT) [![Python Version](https://img.shields.io/badge/Python-3.6%2B-blue)](https://www.python.org/) [![PyPI Version](https://img.shields.io/pypi/v/zapnet.svg)](https://pypi.org/project/zapnet/)
 
 [English](README.md) | [中文](README_zh.md)
 
