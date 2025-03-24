@@ -4,94 +4,94 @@
 https://www.python.org/downloads/) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](
 https://opensource.org/licenses/MIT)
 
-[中文](README_zh.md) | [English](README.md)
+[English](README.md) | [中文](README_zh.md)
 
-ZapNet is a high-performance network diagnostics toolkit with Multi-Protocol Support, including TCP and UDP.
+ZapNet 是一个高性能的 TCP/UDP 网络测试诊断工具包，支持 TCP/UDP 协议的多模式测试与流量分析。
 
-## Key Features
+## 核心功能
 
-- 🚀 **Dual Protocol Engine**: TCP full-duplex / UDP broadcast
-- 📊 **Traffic Analytics**: Real-time connection monitoring
-- 🔧 **Smart Config**: YAML-driven test scenarios
-- 💾 **Data Archiving**: Raw packet capture (ASCII/Hex)
-- 🌍 **Cross-Platform**: Windows/macOS/Linux support
+- 🚀 **双协议引擎**：TCP全双工通信 / UDP广播支持
+- 📊 **流量可视化**：实时显示连接状态与流量统计
+- 🔧 **智能配置**：YAML文件驱动多场景测试
+- 💾 **数据归档**：原始报文存储（支持ASCII/Hex）
+- 🌍 **跨平台**：Windows/macOS/Linux全支持
 
-## Installation
+## 安装指南
 
 ```python
-# For production use
+# 生产环境
 pip install zapnet
 
-# Development setup
+# 开发模式
 git clone https://github.com/luhuadong/zapnet.git
 cd zapnet && pip install -e .[dev]
 ```
 
-## Quick Start
+## 快速开始
 
-### TCP Server/Client
+### TCP 服务端/客户端
 
 ```bash
-# Start TCP server
+# 启动 TCP 服务端
 zapnet tcp-server --port 5555
 
-# Start TCP client
+# 新终端运行 TCP 客户端测试
 zapnet tcp-client --host 127.0.0.1 --port 5555 --data "Hello, World"
 ```
 
-### UDP Server/Client
+### UDP 服务端/客户端
 
 ```bash
-# Start UDP server
+# 启动 UDP 服务端
 zapnet udp-server --port 6666
 
-# Start UDP client
+# 新终端运行 UDP 客户端测试
 zapnet udp-client --host 127.0.0.1 --port 6666 --data "Hello, World"
 ```
 
-### Device Discovery (UDP Broadcast)
+### 设备发现（UDP广播）
 
 ```bash
-# Send probe broadcast
+# 发送设备探测广播（全子网）
 zapnet udp-client --target 192.168.1.255:9999 --broadcast --hex "A1B2C3D4"
 
-# Monitor responses
+# 监听响应（服务端模式）
 zapnet udp-server --port 9999 --filter "hex_contains(payload, 'C3D4')" --output devices.log
 ```
 
-### Network Sniffing (UDP)
+### 网络嗅探（UDP诊断）
 
 ```bash
-# Capture DNS queries
+# 捕获DNS请求（端口53）
 zapnet udp-server --port 53 --hex --stats 5
 
-# Send custom DNS query
+# 发送自定义DNS查询
 zapnet udp-client --target 8.8.8.8:53 --hex "b362010000010000000000000377777706676f6f676c6503636f6d0000010001"
 ```
 
-### TCP Stress Testing
+### TCP压力测试
 
 ```bash
-# Start TCP server
+# 启动TCP压力服务器
 zapnet tcp-server --port 9000 --max-conn 50 --timeout 300
 
-# Simulate high concurrency
+# 模拟高并发客户端（10线程，持续60秒）
 zapnet tcp-client --host 127.0.0.1 --port 9000 --threads 10 --duration 60 --message "LOAD_TEST"
 ```
 
-### File Transfer
+### 文件传输
 
 ```bash
-# Send file (TCP)
+# 发送文件（TCP模式）
 zapnet tcp-client --host 192.168.1.100 --port 8888 --file data.zip
 
-# Receive files
+# 接收文件（自动保存）
 zapnet tcp-server --port 8888 --output received_files/
 ```
 
-## Advanced Configuration
+## 高级配置
 
-You can set default parameters through ZapNet's configuration file `config.yaml`, for example:
+可通过 ZapNet 的配置文件 `config.yaml` 设置默认参数，例如：
 
 ```yaml
 network:
@@ -109,12 +109,12 @@ security:
   allowed_ips: ["192.168.1.0/24"]
 ```
 
-Launch with:
+启动配置：
 
 ```bash
 zapnet --config config.yaml
 ```
 
-## License
+## 许可证
 
-Distributed under the MIT License. See [LICENSE](LICENSE.md) for more information.
+基于MIT许可证分发，详见 [LICENSE](LICENSE.md) 文件。
