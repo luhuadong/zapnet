@@ -1,8 +1,12 @@
 [tool.poetry]
 name = "zapnet"
-version = "0.1.0"
+version = "0.1.1"
 description = "Network diagnostics toolkit"
-authors = ["Your Name <you@example.com>"]
+authors = ["luhuadong <luhuadong@163.com>"]
+readme = "README.md"
+license = "MIT"
+homepage = "https://github.com/luhuadong/zapnet"
+repository = "https://github.com/luhuadong/zapnet"
 packages = [
     { include = "zapnet", from = "src" }
 ]
@@ -11,6 +15,8 @@ packages = [
 zapnet = "zapnet.cli:cli"
 
 [tool.poetry.dependencies]
+python = "^3.6"
+click = "^8.1.3"
 netifaces = "^0.11.0"
 
 [build-system]
