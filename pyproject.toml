@@ -1,0 +1,15 @@
+[tool.poetry]
+name = "zapnet"
+version = "0.1.0"
+description = "Network diagnostics toolkit"
+authors = ["Your Name <you@example.com>"]
+packages = [
+    { include = "zapnet", from = "src" }
+]
+
+[tool.poetry.scripts]
+zapnet = "zapnet.cli:cli"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

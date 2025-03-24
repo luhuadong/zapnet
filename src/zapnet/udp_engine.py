@@ -1,12 +1,13 @@
 import socket
-from utils.logger import DataLogger
-from utils.network import parse_address
+from .utils.logger import DataLogger
+from .utils.network import parse_address
 
 class UDPServer:
-    def __init__(self, port, output, broadcast):
+    def __init__(self, port, output, broadcast, hex_mode=False):
         self.port = port
         self.logger = DataLogger(output)
         self.broadcast = broadcast
+        self.hex_mode = hex_mode
         
     def run(self):
         sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -17,8 +18,18 @@ class UDPServer:
         
         while True:
             data, addr = sock.recvfrom(4096)
-            log_entry = f"[UDP] From {addr}: {data.hex()}"
+            formatted = self._format_data(data)
+            log_entry = f"[TCP] {addr} => {formatted}"
             self.logger.write(log_entry)
+    
+    def _format_data(self, data: bytes) -> str:
+        if self.hex_mode:
+            return ' '.join(f"{b:02x}" for b in data)
+        
+        try:
+            return data.decode('utf-8', errors='replace')
+        except UnicodeDecodeError:
+            return ' '.join(f"{b:02x}" for b in data)
 
 class UDPClient:
     @staticmethod

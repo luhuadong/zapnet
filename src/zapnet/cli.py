@@ -14,9 +14,10 @@ def tcp():
 @click.option("--port", required=True, type=int)
 @click.option("--max-conn", default=100, help="Maximum connections")
 @click.option("--output", type=click.Path(), help="Save received data")
-def server(port, max_conn, output):
+@click.option("--hex", is_flag=True, help="Display data in hexadecimal")
+def server(port, max_conn, output, hex):
     """Start TCP server"""
-    TCPServer(port, max_conn, output).run()
+    TCPServer(port, max_conn, output, hex_mode=hex).run()
 
 @tcp.command()
 @click.option("--host", required=True)
@@ -35,10 +36,11 @@ def udp():
 @udp.command()
 @click.option("--port", required=True, type=int)
 @click.option("--output", type=click.Path(), help="Save received data")
+@click.option("--hex", is_flag=True, help="Display data in hexadecimal")
 @click.option("--broadcast", is_flag=True, help="Enable broadcast")
-def server(port, output, broadcast):
+def server(port, output, hex, broadcast):
     """UDP server mode"""
-    UDPServer(port, output, broadcast).run()
+    UDPServer(port, output, broadcast, hex_mode=hex).run()
 
 @udp.command()
 @click.option("--target", required=True)
